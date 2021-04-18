@@ -41,7 +41,7 @@ public class SweetOrderServiceImpl implements SweetOrderService{
 			if(productRepository.existsById(p.getProdId()))
 				continue;
 			else
-				throw new ProductNotFoundException("No such productrepositoryoduct found");
+				throw new ProductNotFoundException("No such product found");
 		}
 		sweetOrder.setProdList(productlist);
 		sweetOrder.setTotalCost(calculateTotalCost(productlist));

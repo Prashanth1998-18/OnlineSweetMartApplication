@@ -86,7 +86,7 @@ public class SweetOrderServiceTest {
 	@Test
 	public void test_findSweetOrderByCustomerId() throws Exception {
 		Customer cust1 = new Customer(123, "Prashanth", "aripiralap@gmail.com",
-				new Address("Hyderabad", "9885394447", 500054), null);
+				new Address("Hyderabad", "9885394447", "500054"), null);
 		SweetOrder s = new SweetOrder();
 		s.setCustomer(cust1);
 		SweetOrder s2 = new SweetOrder(2, null);

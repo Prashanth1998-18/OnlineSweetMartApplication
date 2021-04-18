@@ -37,18 +37,23 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public Product updateProduct(Product product)throws ProductNotFoundException{
+	public Product updateProduct(Product product)throws ProductNotFoundException,CategoryNotFoundException{
 		
 		int productId=product.getProdId();
 		boolean found=productRepository.existsById(productId);
-		
+		int categoryId=product.getCategory().getCategoryId();
+		boolean categoryfound=categoryRepository.existsById(categoryId);
 		if(found)
 		{
+			if(categoryfound) {
 			product.setProdName(product.getProdName());
 			product.setProdPrice(product.getProdPrice());
 			product.setExpDate(product.getExpDate());
 			product.setCategory(product.getCategory());
 			return productRepository.save(product);
+			}
+			else
+				throw new CategoryNotFoundException("No such category found with id: "+categoryId);
 		}
 		else
 		{

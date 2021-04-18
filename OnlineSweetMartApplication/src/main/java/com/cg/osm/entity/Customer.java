@@ -8,6 +8,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
@@ -35,6 +36,7 @@ public class Customer {
 	@Autowired
 	@Embedded
 	@Cascade(CascadeType.ALL)
+	@Valid
 	private Address address;
 	@OneToMany(mappedBy = "customer")
 	@ElementCollection(targetClass = SweetOrder.class)

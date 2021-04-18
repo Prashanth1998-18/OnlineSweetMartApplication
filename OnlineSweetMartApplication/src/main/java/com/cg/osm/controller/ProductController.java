@@ -59,7 +59,7 @@ public class ProductController {
 	 * if the product doesn't exist an exception is thrown
 	 */
 	@PutMapping(path = "/product")
-	public Product updateProduct(@RequestBody @Valid Product product) throws ProductNotFoundException {
+	public Product updateProduct(@RequestBody @Valid Product product) throws ProductNotFoundException,CategoryNotFoundException {
 		return productservice.updateProduct(product);
 	}
 

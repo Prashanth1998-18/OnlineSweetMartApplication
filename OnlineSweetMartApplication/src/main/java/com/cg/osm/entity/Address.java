@@ -1,7 +1,12 @@
 package com.cg.osm.entity;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Length;
 
 public class Address {
 	@NotNull(message="City name cannot be null")
@@ -9,16 +14,19 @@ public class Address {
 	@NotNull(message ="Contact Number cannot be null")
 	@Size(min = 10,max = 15)
 	private String contactNo;
-	@NotNull(message="zip-code cannot be null")
-	@Size(min = 6,max = 6)
-	private int zip;
+	//@NotNull(message="zip-code cannot be null")
+//	@Pattern(regexp = "^[1-9]{1}[0-9]{2}\\s{0, 1}[0-9]{3}$")
+//	private int zip;
+	@Length(min=6,max=6)
+	private String zip;
+	
 
 	public Address() {
 	}// closing constructor
 
 	public Address(@NotNull(message = "City name cannot be null") String city,
 			@NotNull(message = "Contact Number cannot be null") @Size(min = 10, max = 15) String contactNo,
-			@NotNull(message = "zip-code cannot be null") @Size(min = 6, max = 6) int zip) {
+			@Length(min = 6, max = 6) String zip) {
 		this.city = city;
 		this.contactNo = contactNo;
 		this.zip = zip;
@@ -40,11 +48,11 @@ public class Address {
 		this.contactNo = contactNo;
 	}
 
-	public int getzip() {
+	public String getzip() {
 		return zip;
 	}
 
-	public void setzip(int zip) {
+	public void setzip(String zip) {
 		this.zip = zip;
 	}
 

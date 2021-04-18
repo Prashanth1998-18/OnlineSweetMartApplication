@@ -42,7 +42,7 @@ public class CustomerControllerTest {
 	@Test
 	void test_findCustomerById() throws Exception {
 		BDDMockito.given(customerservice.findCustomerById(123))
-		.willReturn(Optional.of(new Customer(123,"Prashanth","aripiralap@gmail.com",new Address("Hyderabad","9885394447",500054),null)));
+		.willReturn(Optional.of(new Customer(123,"Prashanth","aripiralap@gmail.com",new Address("Hyderabad","9885394447","500054"),null)));
 		mockmvc.perform(MockMvcRequestBuilders.get("/customer/123"))
 		.andExpect(status().isOk());
 	}
@@ -55,7 +55,7 @@ public class CustomerControllerTest {
 	}
 	@Test
 	void test_addCustomer() throws Exception {
-		Customer cust1=new Customer(123,"Prashanth","aripiralap@gmail.com",new Address("Hyderabad","9885394447",500054),null);
+		Customer cust1=new Customer(123,"Prashanth","aripiralap@gmail.com",new Address("Hyderabad","9885394447","500054"),null);
 		BDDMockito.given(customerservice.addCustomer(cust1)).willReturn(cust1);
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/customer")
 				.contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
@@ -80,7 +80,7 @@ public class CustomerControllerTest {
 	@Test
 	void test_findCustomerByName() throws Exception {
 		BDDMockito.given(customerservice.findCustomerByName("Prashanth"))
-		.willReturn(Optional.of(new Customer(123,"Prashanth","aripiralap@gmail.com",new Address("Hyderabad","9885394447",500054),null)));
+		.willReturn(Optional.of(new Customer(123,"Prashanth","aripiralap@gmail.com",new Address("Hyderabad","9885394447","500054"),null)));
 		mockmvc.perform(MockMvcRequestBuilders.get("/customer/name/Prashanth"))
 		.andExpect(status().isOk());
 	}
@@ -94,8 +94,8 @@ public class CustomerControllerTest {
 	
 	@Test
 	void test_showAllCustomers() throws Exception {
-		Customer cust1=new Customer(123,"Prashanth","aripiralap@gmail.com",new Address("Hyderabad","9885394447",500054),null);
-		Customer cust2=new Customer(124,"Ravi","ravikumar@gmail.com",new Address("Pune","9885454447",500054),null);
+		Customer cust1=new Customer(123,"Prashanth","aripiralap@gmail.com",new Address("Hyderabad","9885394447","500054"),null);
+		Customer cust2=new Customer(124,"Ravi","ravikumar@gmail.com",new Address("Pune","9885454447","500054"),null);
 		List<Customer> customerlist=new ArrayList<>();
 		customerlist.add(cust1);
 		customerlist.add(cust2);
@@ -112,7 +112,7 @@ public class CustomerControllerTest {
 	
 	@Test
 	void test_updateCustomer() throws Exception {
-		Customer cust1=new Customer(123,"Prashanth","aripiralap@gmail.com",new Address("Hyderabad","9885394447",500054),null);
+		Customer cust1=new Customer(123,"Prashanth","aripiralap@gmail.com",new Address("Hyderabad","9885394447","500054"),null);
 		BDDMockito.given(customerservice.updateCustomer(cust1)).willReturn(cust1);
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/customer")
 				.contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)
@@ -124,7 +124,7 @@ public class CustomerControllerTest {
 
 	@Test
 	void test_updateCustomer_ThrowCustomerNotFoundException() throws Exception {
-		Customer cust1=new Customer(123,"Prashanth","aripiralap@gmail.com",new Address("Hyderabad","9885394447",500054),null);
+		Customer cust1=new Customer(123,"Prashanth","aripiralap@gmail.com",new Address("Hyderabad","9885394447","500054"),null);
 		BDDMockito.given(customerservice.updateCustomer(Mockito.any(Customer.class))).willThrow(new CustomerNotFoundException("Customer not found"));
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/customer")
 				.contentType(MediaType.APPLICATION_JSON_VALUE).accept(MediaType.APPLICATION_JSON)

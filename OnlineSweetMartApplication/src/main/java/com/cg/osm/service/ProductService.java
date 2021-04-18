@@ -13,7 +13,7 @@ public interface ProductService{
 	
 	public Product addProduct(Product product)throws CategoryNotFoundException;
 	
-	public Product updateProduct(Product product)throws ProductNotFoundException;
+	public Product updateProduct(Product product)throws ProductNotFoundException,CategoryNotFoundException;
 	
 	public String deleteProduct(int ProductId)throws ProductNotFoundException;
 	
