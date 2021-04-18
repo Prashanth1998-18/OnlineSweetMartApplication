@@ -14,80 +14,64 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
-//@ControllerAdvice
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
-	
-	@ExceptionHandler({CustomerNotFoundException.class})
-	public final ResponseEntity<?> handleUserNotFoundException(CustomerNotFoundException ex,WebRequest req) {
-	       System.out.println("Inside ResponseEntityExceptionHandler() of CustomerNotFoundException");
-        ExceptionResponse expResp = new ExceptionResponse(new Date(),ex.getMessage(),"The Customer details requested are not present");
-        return new ResponseEntity<Object>(expResp,HttpStatus.NOT_FOUND);
 
-    }
-	
-	@ExceptionHandler(Exception.class)
-    public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest req) {
-       
-        ExceptionResponse expResp = new ExceptionResponse(new Date(),ex.getMessage(),"General Exception");
-        return new ResponseEntity<Object>(expResp,HttpStatus.BAD_REQUEST);
-    }
+	@ExceptionHandler({ CustomerNotFoundException.class })
+	public final ResponseEntity<?> handleUserNotFoundException(CustomerNotFoundException ex, WebRequest req) {
+		System.out.println("Inside ResponseEntityExceptionHandler() of CustomerNotFoundException");
+		ExceptionResponse expResp = new ExceptionResponse(new Date(), ex.getMessage(),
+				"The Customer details requested are not present");
+		return new ResponseEntity<Object>(expResp, HttpStatus.NOT_FOUND);
 
-//	@Override
-//	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-//			HttpHeaders headers, HttpStatus status, WebRequest request) {
-//		ExceptionResponse expRes = new ExceptionResponse(new Date(), "Validation Failed",ex.getBindingResult().toString());
-//		return new ResponseEntity(expRes, HttpStatus.BAD_REQUEST);
-//
-//	}
-	@Override
-    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers,
-            HttpStatus status, WebRequest request) {
-        System.out.println("Inside handleTypeMismatch()");
-        ExceptionResponse expRes = new ExceptionResponse(new Date(), "Validation Failed", ex.getErrorCode());
-        return new ResponseEntity<Object>(expRes, HttpStatus.BAD_REQUEST); // 400
-    }
-	
-	 @ExceptionHandler({SweetOrderNotFoundException.class})//just like catch(SweetOrderNotFoundException e)
-	    @ResponseStatus(HttpStatus.NOT_FOUND)
-	    public final ExceptionResponse handleSweetOrderNotFoundException(SweetOrderNotFoundException ex,WebRequest req) {     
-	    	System.out.println("inside handleSweetOrderNotFoundException() ");
-	        ExceptionResponse expResp = new ExceptionResponse(new Date(),"There is no order found with the given details",ex.getMessage());
-	       // return new ResponseEntity(expResp,HttpStatus.NOT_FOUND);//404 not found
-	          return expResp;
-	    }
-	    
-	    @Override
-		protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-				HttpHeaders headers, HttpStatus status, WebRequest request) {
-			System.out.println("inside handleMethodArgumentNotValid()");
-			 ExceptionResponse expRes = new ExceptionResponse(new Date(),ex.getMessage().toString(), "Argument not found");
-		        return new ResponseEntity<Object>(expRes, HttpStatus.BAD_REQUEST);
-		}
-	    
-	    @ExceptionHandler({ ProductNotFoundException.class })
-		public final ResponseEntity<Object> handleProductNotFoundException(ProductNotFoundException ex, WebRequest rq) {
-	    	 System.out.println("Inside ResponseEntityExceptionHandler() of ProductNotFoundException");
-			ExceptionResponse expResp = new ExceptionResponse(new Date(),
-					"Invalid Product Details/The product which you are trying to fetch is not available", ex.getMessage());
-			return new ResponseEntity<Object>(expResp, HttpStatus.NOT_FOUND);
-		}
-		
-		@ExceptionHandler({ CategoryNotFoundException.class })
-		public final ResponseEntity<Object> handleCategoryNotFoundException(CategoryNotFoundException ex, WebRequest rq) {
-			System.out.println("Inside ResponseEntityExceptionHandler() of CategoryNotFoundException");
-			ExceptionResponse expResp = new ExceptionResponse(new Date(),
-					"Invalid Category Details/The category which you are trying to fetch is not available", ex.getMessage());
-			return new ResponseEntity<Object>(expResp, HttpStatus.NOT_FOUND);
-		}
-
-//		  to be discussed and agreed upon
-//	    @ExceptionHandler(Exception.class)
-//	    public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest req) {
-//	       System.out.println("inside handleAllException() ");
-//	        ExceptionResponse expResp = new ExceptionResponse(ex.getMessage(),"Detail Description of the Exception",new Date());
-//	        return new ResponseEntity(expResp,HttpStatus.INTERNAL_SERVER_ERROR);//500 
-//	    }
-		
-	    
 	}
 
+	@Override
+	protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers,
+			HttpStatus status, WebRequest request) {
+		System.out.println("Inside handleTypeMismatch()");
+		ExceptionResponse expRes = new ExceptionResponse(new Date(), "Validation Failed", ex.getErrorCode());
+		return new ResponseEntity<Object>(expRes, HttpStatus.BAD_REQUEST); // 400
+	}
+
+	@ExceptionHandler({ SweetOrderNotFoundException.class }) // just like catch(SweetOrderNotFoundException e)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public final ExceptionResponse handleSweetOrderNotFoundException(SweetOrderNotFoundException ex, WebRequest req) {
+		System.out.println("inside handleSweetOrderNotFoundException() ");
+		ExceptionResponse expResp = new ExceptionResponse(new Date(), "There is no order found with the given details",
+				ex.getMessage());
+		return expResp;
+	}
+
+	@Override
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		System.out.println("inside handleMethodArgumentNotValid()");
+		ExceptionResponse expRes = new ExceptionResponse(new Date(), ex.getMessage().toString(), "Argument not found");
+		return new ResponseEntity<Object>(expRes, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler({ ProductNotFoundException.class })
+	public final ResponseEntity<Object> handleProductNotFoundException(ProductNotFoundException ex, WebRequest rq) {
+		System.out.println("Inside ResponseEntityExceptionHandler() of ProductNotFoundException");
+		ExceptionResponse expResp = new ExceptionResponse(new Date(),
+				"Invalid Product Details/The product which you are trying to fetch is not available", ex.getMessage());
+		return new ResponseEntity<Object>(expResp, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler({ CategoryNotFoundException.class })
+	public final ResponseEntity<Object> handleCategoryNotFoundException(CategoryNotFoundException ex, WebRequest rq) {
+		System.out.println("Inside ResponseEntityExceptionHandler() of CategoryNotFoundException");
+		ExceptionResponse expResp = new ExceptionResponse(new Date(),
+				"Invalid Category Details/The category which you are trying to fetch is not available",
+				ex.getMessage());
+		return new ResponseEntity<Object>(expResp, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(Exception.class)
+	public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest req) {
+
+		ExceptionResponse expResp = new ExceptionResponse(new Date(), ex.getMessage(), "General Exception");
+		return new ResponseEntity<Object>(expResp, HttpStatus.BAD_REQUEST);
+	}
+
+}

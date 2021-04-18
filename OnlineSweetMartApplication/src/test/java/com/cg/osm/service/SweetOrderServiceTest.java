@@ -11,9 +11,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,19 +26,19 @@ import com.cg.osm.entity.Customer;
 import com.cg.osm.entity.Product;
 import com.cg.osm.entity.SweetOrder;
 import com.cg.osm.error.CustomerNotFoundException;
-import com.cg.osm.error.ProductNotFoundException;
 import com.cg.osm.error.SweetOrderNotFoundException;
 import com.cg.osm.repository.CustomerRepository;
 import com.cg.osm.repository.SweetOrderJpaRepository;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class SweetOrderServiceTest {
 
-	@Autowired
+	@InjectMocks
 	private SweetOrderServiceImpl service;
-	@MockBean
-	private SweetOrderJpaRepository repository;
 	
+	@Mock
+	private SweetOrderJpaRepository repository;
+
 	@Mock
 	private CustomerRepository customerrepository;
 
@@ -94,9 +97,11 @@ public class SweetOrderServiceTest {
 		List<SweetOrder> orders = new ArrayList<SweetOrder>();
 		orders.add(s);
 		orders.add(s2);
-		BDDMockito.given(repository.findOrdersByCustomerId(cust1.getUserId())).willReturn(orders);
-		List<SweetOrder> result = service.findOrdersByCustomerId(cust1.getUserId());
-		assertEquals(cust1.getUserId(), result.get(0).getCustomer().getUserId());
+		BDDMockito.given(customerrepository.existsById(123)).willReturn(true);
+		BDDMockito.given(repository.findOrdersByCustomerId(123)).willReturn(orders);
+		
+		List<SweetOrder> result = service.findOrdersByCustomerId(123);
+		assertEquals(2, result.size());
 	}
 
 	@Test

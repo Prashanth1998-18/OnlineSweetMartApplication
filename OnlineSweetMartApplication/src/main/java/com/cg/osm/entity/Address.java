@@ -1,28 +1,20 @@
 package com.cg.osm.entity;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 import org.hibernate.validator.constraints.Length;
 
 public class Address {
-	@NotNull(message="City name cannot be null")
+	@NotNull(message = "City name cannot be null")
 	private String city;
-	@NotNull(message ="Contact Number cannot be null")
-	@Size(min = 10,max = 15)
+	@NotNull(message = "Contact Number cannot be null")
+	@Size(min = 10, max = 15)
 	private String contactNo;
-	//@NotNull(message="zip-code cannot be null")
-//	@Pattern(regexp = "^[1-9]{1}[0-9]{2}\\s{0, 1}[0-9]{3}$")
-//	private int zip;
-	@Length(min=6,max=6)
+	@Length(min = 6, max = 6)
 	private String zip;
-	
 
 	public Address() {
-	}// closing constructor
+	}
 
 	public Address(@NotNull(message = "City name cannot be null") String city,
 			@NotNull(message = "Contact Number cannot be null") @Size(min = 10, max = 15) String contactNo,
@@ -61,4 +53,4 @@ public class Address {
 		return "Address [city=" + city + ", contactNo=" + contactNo + ", zip=" + zip + "]";
 	}
 
-}
+}// closing class

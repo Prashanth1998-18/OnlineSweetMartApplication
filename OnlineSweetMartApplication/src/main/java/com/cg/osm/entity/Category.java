@@ -10,11 +10,20 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Category {
 	@Id
-	//@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer categoryId;
 	@Column(unique = true)
 	@NotEmpty(message = "Category name cannot be empty")
     private String name;
+	
+	public Category() {
+		super();
+	}
+
+	public Category(Integer categoryId, @NotNull(message = "Category name cannot be null") String name) {
+		this.categoryId = categoryId;
+		this.name = name;
+	}
+	
 	public Integer getCategoryId() {
 		return categoryId;
 	}
@@ -27,14 +36,7 @@ public class Category {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Category() {
-		super();
-	}
-
-	public Category(Integer categoryId, @NotNull(message = "Category name cannot be null") String name) {
-		this.categoryId = categoryId;
-		this.name = name;
-	}
+	
 	@Override
 	public String toString() {
 		return categoryId+" "+name;

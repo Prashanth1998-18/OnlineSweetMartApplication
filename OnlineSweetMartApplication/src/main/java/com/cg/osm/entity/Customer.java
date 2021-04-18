@@ -23,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Customer {
 
 	@Id
-	//@GeneratedValue(strategy = GenerationType.)
 	private Integer userId;
 	@Column(name="Name")
 	@NotEmpty(message = "UserName cannot be empty")
@@ -47,15 +46,9 @@ public class Customer {
 	public Customer() {
 	}
 
-	public int getUserId() {
-		return userId;
-	}
-
-
-
 	public Customer(Integer userId, @NotEmpty(message = "UserName cannot be empty") String username,
 			@Email(message = "Please check your EmailId") @NotEmpty(message = "Email cannot be empty") String email,
-			Address address, List<SweetOrder> sweetOrders) {
+			@Valid Address address, List<SweetOrder> sweetOrders) {
 		this.userId = userId;
 		this.username = username;
 		this.email = email;
@@ -70,7 +63,11 @@ public class Customer {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
+	
+	public int getUserId() {
+		return userId;
+	}
+	
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}

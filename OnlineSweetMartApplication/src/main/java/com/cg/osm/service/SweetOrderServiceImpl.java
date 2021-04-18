@@ -15,94 +15,93 @@ import com.cg.osm.error.SweetOrderNotFoundException;
 import com.cg.osm.repository.CustomerRepository;
 import com.cg.osm.repository.ProductRepository;
 import com.cg.osm.repository.SweetOrderJpaRepository;
+
 @Service
-public class SweetOrderServiceImpl implements SweetOrderService{
-	
+public class SweetOrderServiceImpl implements SweetOrderService {
+
 	@Autowired
 	private SweetOrderJpaRepository sweetOrderRepository;
-	
+
 	@Autowired
 	private CustomerRepository customerRepository;
-	
+
 	@Autowired
 	private ProductRepository productRepository;
 
 	@Override
-	public SweetOrder addSweetOrder(SweetOrder sweetOrder)throws CustomerNotFoundException,ProductNotFoundException {
-		int customerId=sweetOrder.getCustomer().getUserId();
-		if(!customerRepository.existsById(customerId))
+	public SweetOrder addSweetOrder(SweetOrder sweetOrder) throws CustomerNotFoundException, ProductNotFoundException {
+		int customerId = sweetOrder.getCustomer().getUserId();
+		if (!customerRepository.existsById(customerId))
 			throw new CustomerNotFoundException("No such customer found");
 		sweetOrder.setCustomer(customerRepository.getOne(customerId));
-		LocalDate date=LocalDate.now();
+		LocalDate date = LocalDate.now();
 		sweetOrder.setDate(date);
-		List<Product> productlist=sweetOrder.getProdList();
-		for(Product p:productlist)
-		{
-			if(productRepository.existsById(p.getProdId()))
+		List<Product> productList = sweetOrder.getProdList();
+		for (Product p : productList) {
+			if (productRepository.existsById(p.getProdId()))
 				continue;
 			else
 				throw new ProductNotFoundException("No such product found");
 		}
-		sweetOrder.setProdList(productlist);
-		sweetOrder.setTotalCost(calculateTotalCost(productlist));
-		SweetOrder sweetOrder1=sweetOrderRepository.saveAndFlush(sweetOrder);
+		sweetOrder.setProdList(productList);
+		sweetOrder.setTotalCost(calculateTotalCost(productList));
+		SweetOrder sweetOrder1 = sweetOrderRepository.saveAndFlush(sweetOrder);
 		return sweetOrder1;
 	}
 
-
 	@Override
-	public String cancelSweetOrder(int sweetOrderId)throws SweetOrderNotFoundException{
-		boolean found=sweetOrderRepository.existsById(sweetOrderId);
-		if(found)
-		{
+	public String cancelSweetOrder(int sweetOrderId) throws SweetOrderNotFoundException {
+		boolean sweetOrder_found = sweetOrderRepository.existsById(sweetOrderId);
+		if (sweetOrder_found) {
 			sweetOrderRepository.deleteById(sweetOrderId);
 			return "Order deleted";
 		}
-		throw new SweetOrderNotFoundException("No such order found to delete with id:"+sweetOrderId);
+		throw new SweetOrderNotFoundException("No such order found to delete with id:" + sweetOrderId);
 	}
-	
+
 	@Override
-	public List<SweetOrder> ShowAllSweetOrder()throws SweetOrderNotFoundException {
-		List<SweetOrder> sweetorderlist=sweetOrderRepository.findAll();
-		if(sweetorderlist.size()==0)
-		{
+	public List<SweetOrder> ShowAllSweetOrder() throws SweetOrderNotFoundException {
+		List<SweetOrder> sweetorderList = sweetOrderRepository.findAll();
+		if (sweetorderList.size() == 0) {
 			throw new SweetOrderNotFoundException("No orders found");
-		}
-		else 
-		{
-			return sweetorderlist;
+		} else {
+			return sweetorderList;
 		}
 	}
 
 	@Override
-	public double calculateTotalCost(List<Product> productlist) {
-		double sum=0;
-		for(Product p:productlist) {
-			sum=sum+p.getProdPrice();
-			}
+	public double calculateTotalCost(List<Product> productList) {
+		double sum = 0;
+		for (Product product : productList) {
+			sum = sum + product.getProdPrice();
+		}
 		return sum;
 	}
 
 	@Override
-	public List<SweetOrder> findOrdersByCustomerId(int customerId)throws CustomerNotFoundException{
-		List<SweetOrder> orderList= sweetOrderRepository.findOrdersByCustomerId(customerId);
-		if(orderList.size()!=0)
-			return orderList;
-		else
-			throw new CustomerNotFoundException("No such Customer found with id:"+customerId);
-	}
+	public List<SweetOrder> findOrdersByCustomerId(int customerId)
+			throws CustomerNotFoundException, SweetOrderNotFoundException {
+		boolean customerfound = customerRepository.existsById(customerId);
+		if (customerfound) {
+			List<SweetOrder> orderList = sweetOrderRepository.findOrdersByCustomerId(customerId);
+			if (orderList.size() == 0) {
+				throw new SweetOrderNotFoundException("No sweet orders by the given customer");
+			} else {
+				return orderList;
+			}
 
+		} else
+			throw new CustomerNotFoundException("No such Customer found with id:" + customerId);
+	}
 
 	@Override
-	public Optional<SweetOrder> findOrderById(int orderId)throws SweetOrderNotFoundException{
-		Optional<SweetOrder> sweetOrder=sweetOrderRepository.findById(orderId);
-		if(sweetOrder.isPresent())
-		{			
+	public Optional<SweetOrder> findOrderById(int orderId) throws SweetOrderNotFoundException {
+		Optional<SweetOrder> sweetOrder = sweetOrderRepository.findById(orderId);
+		if (sweetOrder.isPresent()) {
 			return sweetOrder;
 		}
-		throw new SweetOrderNotFoundException("No such order found with id:"+orderId);
-		
-	}
+		throw new SweetOrderNotFoundException("No such order found with id:" + orderId);
 
+	}
 
 }

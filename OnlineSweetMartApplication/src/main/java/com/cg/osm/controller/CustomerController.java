@@ -29,8 +29,6 @@ public class CustomerController {
 	/* Method to add a Customer */
 	@PostMapping(path = "/customer")
 	public Customer addCustomer(@RequestBody @Valid Customer customer) {
-		// return new
-		// ResponseEntity<Customer>(customerservice.addCustomer(customer),HttpStatus.OK);
 		return customerservice.addCustomer(customer);
 	}
 

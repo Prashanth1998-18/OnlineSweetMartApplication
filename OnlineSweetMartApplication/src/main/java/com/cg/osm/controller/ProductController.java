@@ -67,49 +67,74 @@ public class ProductController {
 	 * deleting a product from the database based on its ID
 	 * throw exception if there's no such product present
 	 */
-	@DeleteMapping(path = "/product/{prodId}")
-	public String deleteProduct(@PathVariable("prodId") int prodId) throws ProductNotFoundException {
-		return productservice.deleteProduct(prodId);
+	@DeleteMapping(path = "/product/{productId}")
+	public String deleteProduct(@PathVariable("productId") int productId) throws ProductNotFoundException {
+		return productservice.deleteProduct(productId);
 	}
 
 	/*
 	 * Finding a product based on productID
 	 * throw exception if the product is not present
 	 */
-	@GetMapping(path = "/product/{prodId}")
-	public Product getProductById(@PathVariable("prodId") int prodId) throws ProductNotFoundException {
-		Optional<Product> product = productservice.findByProductId(prodId);
+	@GetMapping(path = "/product/{productId}")
+	public Product getProductById(@PathVariable("productId") int productId) throws ProductNotFoundException {
+		Optional<Product> product = productservice.findByProductId(productId);
 			return product.get();
 	}
+	
+	/*
+	 * Finding all products based on categoryID
+	 * throw exception if the category is not found
+	 * and product not found exception if there are no products in the given category
+	 */
 	@GetMapping(path="/product/category/{id}")
-	public List<Product> showProductsOnCategory(@PathVariable("id") int catid) throws ProductNotFoundException, CategoryNotFoundException
+	public List<Product> showProductsOnCategory(@PathVariable("id") int categoryId) throws ProductNotFoundException, CategoryNotFoundException
 	{
-		return productservice.findByCategoryId(catid);
+		return productservice.findByCategoryId(categoryId);
 	}
 
 //===========================================================================================================================================//
 
+	/*
+	 * Retrieving all the categories
+	 * throw exception if there are no categories 
+	 */
 	@GetMapping(path = "/category")
 	public List<Category> showAllCategories()throws CategoryNotFoundException {
 		return categoryservice.showAllCategories();
 	}
 
+	/*
+	 * Updating a category
+	 * Throw exception if there is no such category
+	 */
 	@PutMapping(path = "/category")
 	public Category updateCategory(@RequestBody @Valid Category category) throws CategoryNotFoundException {
 		return categoryservice.updateCategory(category);
 	}
 
+	/*
+	 * Adding a new category 
+	 */
 	@PostMapping(path = "/category")
 	public Category addCategory(@RequestBody @Valid Category category) {
 		return categoryservice.addCategory(category);
 	}
 
+	/*
+	 * Deleting a category
+	 * Throw exception if there is no such category
+	 */
 	@DeleteMapping(path = "/category/{categoryId}")
 	public String deleteCategoryById(@PathVariable("categoryId") int id) throws CategoryNotFoundException {
 		return categoryservice.deleteCategoryById(id);
 
 	}
 
+	/*
+	 * Getting a category based on its ID
+	 * Throw exception if there is no such category
+	 */
 	@GetMapping(path="/category/{categoryId}")
 	public Category getCategoryById(@PathVariable("categoryId") int id) throws CategoryNotFoundException
 	{
